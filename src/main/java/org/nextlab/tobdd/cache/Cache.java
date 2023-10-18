@@ -1,12 +1,15 @@
 package org.nextlab.tobdd.cache;
 
 import org.nextlab.tobdd.Node;
+import org.nextlab.tobdd.Operator;
 
 public interface Cache {
 
-    /**
-     * @param key is a binary BDD operation.
-     * @return the result of the operation, if not in cache, compute (load) it.
-     */
-    Node getOrCompute(CacheKey key);
+    Node getIfPresent(int hash, Node left, Node right, Operator op);
+
+    void put(int hash, Node left, Node right, Operator op, Node value);
+
+    void clear();
+
+    int getSize();
 }

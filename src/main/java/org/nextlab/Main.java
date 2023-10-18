@@ -1,6 +1,6 @@
 package org.nextlab;
 
-import org.nextlab.tobdd.BDD;
+import org.nextlab.tobdd.Node;
 import org.nextlab.tobdd.TOBDD;
 
 public class Main {
@@ -8,17 +8,23 @@ public class Main {
         System.out.println("TOBDD-simple example:");
         TOBDD tobdd = new TOBDD(1000, 1000, 3);
 
-        BDD x = tobdd.getVar(0);
-        BDD y = tobdd.getVar(1);
-        BDD z = tobdd.getVar(2);
+        Node x = tobdd.getVar(2);
+        Node y = tobdd.getVar(1);
+        Node z = tobdd.getVar(0);
 
-        BDD xy = x.and(y);
-        BDD xyz = xy.and(z);
-        BDD xyZ = xy.and(z.not());
+        Node xy = tobdd.And(x, y).ref();
+        Node xyz = tobdd.And(xy, z).ref();
+        Node xyZ = tobdd.And(xy, tobdd.Not(z)).ref();
 
-        System.out.println("Node Count: " + tobdd.getNodeNum());
+        assert xy == tobdd.Or(xyz, xyZ): "Error: xy != xyz.or(xyZ)";
+        assert !(xy == tobdd.getFalse()): "Error: xy == FALSE";
 
-        assert xy.equals(xyz.or(xyZ)): "Error: xy != xyz.or(xyZ)";
-        assert !xy.equals(tobdd.getFalse()): "Error: xy == FALSE";
+        // Because xy is used by xyz and xyZ, by de-referencing xy, xy will not be garbage collected.
+        xy.deref();
+        tobdd.gc(true);
+        // De-ref xyz and xyZ, now all of them will be garbage collected.
+        xyz.deref();
+        xyZ.deref();
+        tobdd.gc(true);
     }
 }
