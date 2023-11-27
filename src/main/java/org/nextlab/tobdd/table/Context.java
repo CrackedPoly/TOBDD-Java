@@ -63,6 +63,10 @@ public abstract class Context {
         return node == falseNode;
     }
 
+    public abstract boolean isVar(Node node);
+
+    public abstract boolean isNVar(Node node);
+
     /*
      * left & right
      * */
@@ -89,7 +93,7 @@ public abstract class Context {
         if (tmp != null) {
             return tmp;
         }
-        int m = Math.min(left.level, right.level);
+        int m = right.level;
         Node fLow = bddAnd(negCof(left, m), negCof(right, m));
         Node fHigh = bddAnd(posCof(left, m), posCof(right, m));
         Node result = combine(m, fLow, fHigh);
@@ -123,7 +127,7 @@ public abstract class Context {
         if (tmp != null) {
             return tmp;
         }
-        int m = Math.min(left.level, right.level);
+        int m = right.level;
         Node fLow = bddOr(negCof(left, m), negCof(right, m));
         Node fHigh = bddOr(posCof(left, m), posCof(right, m));
         Node result = combine(m, fLow, fHigh);
@@ -182,7 +186,7 @@ public abstract class Context {
         if (tmp != null) {
             return tmp;
         }
-        int m = Math.min(left.level, right.level);
+        int m = right.level;
         Node fLow = bddXor(negCof(left, m), negCof(right, m));
         Node fHigh = bddXor(posCof(left, m), posCof(right, m));
         Node result = combine(m, fLow, fHigh);
@@ -234,6 +238,42 @@ public abstract class Context {
         Node result = combine(m, fLow, fHigh);
         opCache.put(hash, left, right, Operator.IMP, result);
         return result;
+    }
+
+    /*
+    * return true if two bdds' conjunction is empty
+    * */
+    public Boolean bddAndEmpty(Node left, Node right) {
+        if (isFalse(left) || isFalse(right)) {
+            return true;
+        }
+        if (isTrue(left) || isTrue(right)) {
+            return false;
+        }
+        if (left == right) {
+            return false;
+        }
+        if (left.level == right.level) {
+            return bddAndEmpty(left.low, right.low) && bddAndEmpty(left.high, right.high);
+        }
+        if ((isVar(left) || isNVar(left)) && (isVar(right) || isNVar(right))) {
+            return false;
+        }
+        // now left and right are both bdds with different level
+        Node tmp = left;
+        if (right.level > left.level) {
+            left = right;
+            right = tmp;
+        }
+        if ((isVar(right) || isNVar(right))) {
+            return false;
+        }
+
+        if (isFalse(right.low) || isTrue(right.low)) {
+            return bddAndEmpty(left, right.high);
+        } else {
+            return bddAndEmpty(left, right.low);
+        }
     }
 
     private Node negCof(Node x, int id) {

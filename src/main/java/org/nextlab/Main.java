@@ -6,25 +6,57 @@ import org.nextlab.tobdd.TOBDD;
 public class Main {
     public static void main(String[] args) {
         System.out.println("TOBDD-simple example:");
-        TOBDD tobdd = new TOBDD(1000, 1000, 3);
+        TOBDD tobdd = new TOBDD(1000, 1000, 4);
 
-        Node x = tobdd.getVar(2);
-        Node y = tobdd.getVar(1);
-        Node z = tobdd.getVar(0);
+        Node b1111 = tobdd.And(
+            tobdd.getVar(0), tobdd.And(
+                tobdd.getVar(1), tobdd.And(
+                    tobdd.getVar(2), tobdd.getVar(3)
+                )
+            )
+        );
 
-        Node xy = tobdd.And(x, y).ref();
-        Node xyz = tobdd.And(xy, z).ref();
-        Node xyZ = tobdd.And(xy, tobdd.Not(z)).ref();
+        Node b1xxx = tobdd.And(
+            tobdd.getVar(0), tobdd.And(
+                tobdd.getTrue(), tobdd.And(
+                    tobdd.getTrue(), tobdd.getTrue()
+                )
+            )
+        );
 
-        assert xy == tobdd.Or(xyz, xyZ): "Error: xy != xyz.or(xyZ)";
-        assert !(xy == tobdd.getFalse()): "Error: xy == FALSE";
+        Node b0xxx = tobdd.And(
+            tobdd.getNVar(0), tobdd.And(
+                tobdd.getTrue(), tobdd.And(
+                    tobdd.getTrue(), tobdd.getTrue()
+                )
+            )
+        );
 
-        // Because xy is used by xyz and xyZ, by de-referencing xy, xy will not be garbage collected.
-        xy.deref();
-        tobdd.gc(true);
-        // De-ref xyz and xyZ, now all of them will be garbage collected.
-        xyz.deref();
-        xyZ.deref();
-        tobdd.gc(true);
+        Node bxx11 = tobdd.And(
+            tobdd.getTrue(), tobdd.And(
+                tobdd.getTrue(), tobdd.And(
+                    tobdd.getVar(2), tobdd.getVar(3)
+                )
+            )
+        );
+
+        Node bxxx1 = tobdd.And(
+            tobdd.getTrue(), tobdd.And(
+                tobdd.getTrue(), tobdd.And(
+                    tobdd.getTrue(), tobdd.getVar(3)
+                )
+            )
+        );
+
+
+        System.out.println("b1111 and bxx11 should be: " + (tobdd.AndAny(b1111, bxx11)));
+        System.out.println("b1111 and bxxx1 should be: " + (tobdd.AndAny(b1111, bxxx1)));
+        System.out.println("b1xxx and b0xxx should be: " + (tobdd.AndAny(b1xxx, b0xxx)));
+        System.out.println("b1xxx and b1111 should be: " + (tobdd.AndAny(b1xxx, b1111)));
+        System.out.println("b1xxx and bxx11 should be: " + (tobdd.AndAny(b1xxx, bxx11)));
+        System.out.println("b1xxx and bxxx1 should be: " + (tobdd.AndAny(b1xxx, bxxx1)));
+        System.out.println("b0xxx and b1111 should be: " + (tobdd.AndAny(b0xxx, b1111)));
+        System.out.println("b0xxx and bxx11 should be: " + (tobdd.AndAny(b0xxx, bxx11)));
+        System.out.println("b0xxx and bxxx1 should be: " + (tobdd.AndAny(b0xxx, bxxx1)));
     }
 }

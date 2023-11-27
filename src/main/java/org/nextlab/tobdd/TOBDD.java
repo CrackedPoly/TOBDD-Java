@@ -48,6 +48,10 @@ public class TOBDD {
         return nodeContext.bddNot(node);
     }
 
+    public Boolean AndAny(Node left, Node right) {
+        return !nodeContext.bddAndEmpty(left, right);
+    }
+
     public Node Xor(Node left, Node right) {
         return nodeContext.bddXor(left, right);
     }

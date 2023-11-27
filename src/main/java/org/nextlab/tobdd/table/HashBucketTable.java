@@ -38,6 +38,16 @@ public class HashBucketTable extends Context {
         }
     }
 
+    @Override
+    public boolean isVar(Node node) {
+        return isFalse(node.low) && isTrue(node.high);
+    }
+
+    @Override
+    public boolean isNVar(Node node) {
+        return isTrue(node.low) && isFalse(node.high);
+    }
+
     /**
      * Get or create a node in the hash table.
      */
