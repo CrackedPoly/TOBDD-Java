@@ -271,8 +271,10 @@ public abstract class Context {
 
         if (isFalse(right.low) || isTrue(right.low)) {
             return bddAndEmpty(left, right.high);
-        } else {
+        } else if (isFalse(right.high) || isTrue(right.high)) {
             return bddAndEmpty(left, right.low);
+        } else {
+            return bddAndEmpty(left, right.low) && bddAndEmpty(left, right.high);
         }
     }
 
