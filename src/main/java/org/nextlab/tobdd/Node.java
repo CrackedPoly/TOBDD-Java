@@ -1,6 +1,5 @@
 package org.nextlab.tobdd;
 
-import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Node {
@@ -30,12 +29,12 @@ public class Node {
 
     private String _toString(int tabLevel) {
         if (low == null && high == null) {
-            return "Terminal: " + (level == Integer.MAX_VALUE ? "FALSE" : "TRUE");
+            return level == Integer.MAX_VALUE ? "\"FALSE\"" : "\"TRUE\"";
         } else {
-            return "Node {\n" +
-                    "  ".repeat(tabLevel) + "level: " + level + "\n" +
-                    "  ".repeat(tabLevel) + "low: " + low._toString(tabLevel+1) + "\n" +
-                    "  ".repeat(tabLevel) + "high: " + high._toString(tabLevel+1) + "\n" +
+            return "{\n" +
+                    "  ".repeat(tabLevel) + "\"level\": " + level + ",\n" +
+                    "  ".repeat(tabLevel) + "\"low\": " + low._toString(tabLevel+1) + ",\n" +
+                    "  ".repeat(tabLevel) + "\"high\": " + high._toString(tabLevel+1) + "\n" +
                     "  ".repeat(tabLevel-1) + "}";
         }
     }
