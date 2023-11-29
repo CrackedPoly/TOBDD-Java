@@ -2,6 +2,8 @@ package org.nextlab.tobdd.table;
 
 import org.nextlab.tobdd.*;
 import org.nextlab.tobdd.cache.LockFreeCache;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
@@ -109,6 +111,41 @@ public class HashBucketTable extends Context {
         opCache.clear();
         notCache.clear();
         if (verbose) System.out.println("#Node after gc: " + getNodeNum());
+    }
+
+    @Override
+    public Node fromJson(String jsonStr) {
+        if (jsonStr.equals("\"FALSE\"")) return falseNode;
+        if (jsonStr.equals("\"TRUE\"")) return trueNode;
+        JSONObject obj = JSON.parseObject(jsonStr);
+        int level = obj.getIntValue("level");
+        boolean hasLow = obj.containsKey("low");
+        boolean hasHigh = obj.containsKey("high");
+        Node low = null;
+        Node high = null;
+        if (hasLow) {
+            if (obj.get("low") instanceof String) {
+                if (obj.getString("low").equals("FALSE")) {
+                    low = falseNode;
+                } else if (obj.getString("low").equals("TRUE")) {
+                    low = trueNode;
+                }
+            } else {
+                low = fromJson(obj.getString("low"));
+            }
+        }
+        if (hasHigh) {
+            if (obj.get("high") instanceof String) {
+                if (obj.getString("high").equals("FALSE")) {
+                    high = falseNode;
+                } else if (obj.getString("high").equals("TRUE")) {
+                    high = trueNode;
+                }
+            } else {
+                high = fromJson(obj.getString("high"));
+            }
+        }
+        return getOrCreate(level, low, high);
     }
 
     private void markNodesInUse(LockFreeBucket bucket) {

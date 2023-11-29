@@ -64,6 +64,10 @@ public class TOBDD {
         return nodeContext.bddImp(left, right);
     }
 
+    public Node fromJson(String jsonStr) {
+        return nodeContext.fromJson(jsonStr);
+    }
+
     public void gc(boolean verbose) {
         nodeContext.gc(verbose);
     }

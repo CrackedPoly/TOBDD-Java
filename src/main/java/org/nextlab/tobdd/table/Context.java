@@ -265,14 +265,8 @@ public abstract class Context {
             left = right;
             right = tmp;
         }
-        if ((isVar(right) || isNVar(right))) {
+        if (isTrue(right.low) || isTrue(right.high)) {
             return false;
-        }
-
-        if (isFalse(right.low) || isTrue(right.low)) {
-            return bddAndEmpty(left, right.high);
-        } else if (isFalse(right.high) || isTrue(right.high)) {
-            return bddAndEmpty(left, right.low);
         } else {
             return bddAndEmpty(left, right.low) && bddAndEmpty(left, right.high);
         }
@@ -304,4 +298,6 @@ public abstract class Context {
     public abstract int getNodeNum();
 
     public abstract void gc(boolean verbose);
+
+    public abstract Node fromJson(String jsonStr);
 }
