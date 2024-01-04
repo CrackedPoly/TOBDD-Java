@@ -2,6 +2,7 @@ package org.nextlab.tobdd;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+// A Node consumes 4+8+8+16=36 bytes on 64-bit JVM.
 public class Node {
     public int level;
     public final Node low;

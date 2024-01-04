@@ -1,0 +1,93 @@
+{
+  "level": 0,
+  "low": {
+    "level": 1,
+    "low": "FALSE",
+    "high": {
+      "level": 2,
+      "low": {
+        "level": 3,
+        "low": {
+          "level": 4,
+          "low": {
+            "level": 5,
+            "low": {
+              "level": 6,
+              "low": {
+                "level": 7,
+                "low": {
+                  "level": 8,
+                  "low": "FALSE",
+                  "high": {
+                    "level": 9,
+                    "low": {
+                      "level": 10,
+                      "low": {
+                        "level": 11,
+                        "low": {
+                          "level": 12,
+                          "low": {
+                            "level": 13,
+                            "low": {
+                              "level": 14,
+                              "low": {
+                                "level": 15,
+                                "low": "FALSE",
+                                "high": {
+                                  "level": 16,
+                                  "low": "FALSE",
+                                  "high": {
+                                    "level": 17,
+                                    "low": {
+                                      "level": 18,
+                                      "low": "FALSE",
+                                      "high": {
+                                        "level": 19,
+                                        "low": "FALSE",
+                                        "high": {
+                                          "level": 21,
+                                          "low": "FALSE",
+                                          "high": {
+                                            "level": 22,
+                                            "low": {
+                                              "level": 23,
+                                              "low": "TRUE",
+                                              "high": "FALSE"
+                                            },
+                                            "high": "FALSE"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "high": "FALSE"
+                                  }
+                                }
+                              },
+                              "high": "FALSE"
+                            },
+                            "high": "FALSE"
+                          },
+                          "high": "FALSE"
+                        },
+                        "high": "FALSE"
+                      },
+                      "high": "FALSE"
+                    },
+                    "high": "FALSE"
+                  }
+                },
+                "high": "FALSE"
+              },
+              "high": "FALSE"
+            },
+            "high": "FALSE"
+          },
+          "high": "FALSE"
+        },
+        "high": "FALSE"
+      },
+      "high": "FALSE"
+    }
+  },
+  "high": "FALSE"
+}

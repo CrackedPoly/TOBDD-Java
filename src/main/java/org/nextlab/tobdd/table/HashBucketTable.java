@@ -189,6 +189,7 @@ public class HashBucketTable extends Context {
     }
 
     private static class LockFreeBucket {
+        // A ListNode consumes 8+8+36=52 bytes on 64-bit JVM.
         private static class ListNode {
             public Node node;
             public ListNode next;
